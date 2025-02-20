@@ -18,7 +18,7 @@ for i in range(1):
         miner.append(random_letters)
 
 
-session = sa.login("kRxZy_kRxZy", "hi1992") #replace with your username and password
+session = sa.login("Username", "Password") #replace with your username and password
 cloud = session.connect_cloud("1134723891") #replace with your project id
 client = cloud.requests()
 log = []
