@@ -1,5 +1,6 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, request, send_file
 import json
+import os
 
 app = Flask(__name__)
 
@@ -15,7 +16,7 @@ user_balances = load_balances()
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return send_file("index.html")
 
 @app.route("/api/user", methods=["GET"])
 def get_balance():
