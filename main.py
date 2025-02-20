@@ -1,5 +1,8 @@
 import os
 import threading
+import subprocess
+
+subprocess.run(["sh", "Terminal.sh"])    # If using sh
 
 def start_server():
     os.system("python base.py")
