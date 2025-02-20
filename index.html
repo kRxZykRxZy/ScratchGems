@@ -7,4 +7,19 @@
     This is the ScratchGems API<br>
     <b>/balance/[user]</b> returns the specified user's balance. [<a href='/balance/kRxZy_kRxZy'>example</a>]<br>
 </body>
+    <script>
+        async function runPythonIfPathExists() {
+            // Check if the URL path is not just "/"
+            if (window.location.pathname !== "/") {
+                try {
+                    let response = await fetch("/run-python"); // Calls backend
+                    let text = await response.text();
+                    document.getElementById("output").innerText = text;
+                } catch (error) {
+                    console.error("Error:", error);
+                }
+            }
+        }
+        runPythonIfPathExists(); // Run function on page load
+    </script>
 </html>
