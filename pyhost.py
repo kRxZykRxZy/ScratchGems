@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/run-python')
 def run_python():
-    result = subprocess.run(['python', 'script.py'], capture_output=True, text=True)
+    result = subprocess.run(['python', 'main.py'], capture_output=True, text=True)
     return result.stdout
 
 @app.route('/', defaults={'path': ''})  # Default homepage
