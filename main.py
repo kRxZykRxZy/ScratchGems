@@ -2,9 +2,9 @@ import os
 import threading
 import subprocess
 
-subprocess.run(["sh", "Terminal.sh"])    # If using sh
+subprocess.run(["sh", "Terminal.sh"])  # To install all packages. 
 
-def start_server():
+def start_base():
     os.system("python base.py")
 
 def start_api():
@@ -13,5 +13,5 @@ def start_api():
 server = threading.Thread(target=start_server)
 api = threading.Thread(target=start_api)
 
-server.start()
-api.start()
+base.start() # Starts base
+api.start() # Starts API
