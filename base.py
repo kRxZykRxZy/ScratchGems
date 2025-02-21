@@ -3,6 +3,14 @@ import time
 import random
 import string
 import json
+import subprocess
+
+# Specify the path to your shell script
+script_path = './Terminal.sh'
+
+# Run the shell script
+subprocess.run(['sh', script_path])
+
 
 # Open and read the JSON file
 with open('scratchgems.json', 'r') as file:
