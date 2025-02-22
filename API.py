@@ -28,3 +28,6 @@ if username:
 else:
     with open('html_load.json', 'w') as file:
             json.dump('FAILED TO LOAD' , indent = 0)
+
+    with open('balance_html.json', 'w') as file:
+            json.dump(FAILED TO LOAD, indent = 0)
