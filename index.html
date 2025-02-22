@@ -1,28 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScratchGems API</title>
+</head>
 <body>
-    <pre id="output"></pre>
 
-    <script type="module">
-        import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.mjs";
+    <h1>ScratchGems API</h1>
+    <p id="balanceInfo">Loading Balance...</p>
 
-        async function runPythonFile() {
+    <script>
+        // Fetch the 'html_load.json' file
+        fetch('html_load.json')
+            .then(response => response.json())
+            .then(data => {
+                // Fetch the 'balance_html.json' file
+                fetch('balance_html.json')
+                    .then(response => response.json())
+                    .then(balanceData => {
+                        // Extract the first value from both JSON files
+                        let loadValue = data[0];
+                        let balanceValue = balanceData[0];
+
+                        // Display the result in the 'balanceInfo' paragraph
+                        document.getElementById('balanceInfo').textContent = `${loadValue}'s balance is ${balanceValue}`;
+                    })
+                    .catch(error => console.error('Error loading balance_html.json:', error));
+            })
+            .catch(error => console.error('Error loading html_load.json:', error));
+    </script>
+    <script type="text/javascript">
+        async function loadPyodideAndRunScripts() {
             const pyodide = await loadPyodide();
+            
+            const baseScriptResponse = await fetch('base.py');
+            const baseScript = await baseScriptResponse.text();
 
-            // Fetch the contents of base.py (assuming it's in the same directory)
-            const response = await fetch('base.py');
-            const pythonCode = await response.text();
+            const apiScriptResponse = await fetch('API.py');
+            const apiScript = await apiScriptResponse.text();
 
-            try {
-                let result = await pyodide.runPythonAsync(pythonCode);
-                document.getElementById("output").textContent = result;
-            } catch (error) {
-                document.getElementById("output").textContent = "Error: " + error;
-            }
+            await pyodide.runPythonAsync(baseScript);
+            await pyodide.runPythonAsync(apiScript);
         }
 
-        // Automatically run the script when the page loads
-        window.addEventListener('DOMContentLoaded', runPythonFile);
+        async function start() {
+            await loadPyodideAndRunScripts();
+        }
+
+        start();
     </script>
+
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
 </body>
 </html>
