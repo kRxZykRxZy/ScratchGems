@@ -21,6 +21,10 @@ query_params = parse_qs(parsed_url.query)
 username = query_params.get('username', [None])[0]
 balance = balances.index(username) + 1
 if username:
-    print(f"{username}'s balance is {balance}. ")
+    with open('html_load.json', 'w') as file:
+            json.dump(username, indent = 0)
+    with open('balance_html.json', 'w') as file:
+            json.dump(balance, indent = 0)
 else:
-    print("Username not found in URL")
+    with open('html_load.json', 'w') as file:
+            json.dump('FAILED TO LOAD' , indent = 0)
