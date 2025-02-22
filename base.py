@@ -6,7 +6,7 @@ import json
 import subprocess
 
 # Specify the path to your shell script
-script_path = './Terminal.sh'
+script_path = '/Terminal.sh'
 
 # Run the shell script
 subprocess.run(['sh', script_path])
