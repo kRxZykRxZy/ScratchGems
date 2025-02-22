@@ -1,1 +1,28 @@
-coming soon
+<!DOCTYPE html>
+<html>
+<body>
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.mjs";
+
+        async function runPythonFile() {
+            const pyodide = await loadPyodide();
+
+            // Fetch the contents of base.py (assuming it's in the same directory)
+            const response = await fetch('base.py');
+            const pythonCode = await response.text();
+
+            try {
+                let result = await pyodide.runPythonAsync(pythonCode);
+                document.getElementById("output").textContent = result;
+            } catch (error) {
+                document.getElementById("output").textContent = "Error: " + error;
+            }
+        }
+
+        // Automatically run the script when the page loads
+        window.addEventListener('DOMContentLoaded', runPythonFile);
+    </script>
+</body>
+</html>
