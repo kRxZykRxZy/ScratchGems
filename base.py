@@ -38,7 +38,7 @@ cloud = session.connect_cloud("1134723891")  # Replace with your project ID
 client = cloud.requests()
 
 with open('scratchgems.json', 'w') as file:
-    json.dump(people, indent = 4)
+    json.dump(people, indent = 0)
 
 @client.request
 def ping():
@@ -50,7 +50,7 @@ def gift_receive(argument1):
     print(f"Gift received request: {argument1}")
     return people[people.index(argument1) + 1]
     with open('scratchgems.json', 'w') as file:
-        json.dump(people, indent = 4)
+        json.dump(people, indent = 0)
 
 
 @client.request
@@ -62,15 +62,18 @@ def gift_send(argument1, argument2, argument3):
         balance1 = people.index(argument2) + 1
         people[balance1] = people[balance1] + argument1
         with open('scratchgems.json', 'w') as file:
-            json.dump(people, indent = 4)
+            json.dump(people, indent = 0)
     
 @client.request
-def mine(argument1):
+def mine(argument1, argument2):
     print(f"Mining Code: {argument1}")
     if argument1 in miner:
         client.send(message)
         return "100"
-        
+        numb = people.index(argument2)
+        people[numb + 1] = 100 + people[numb + 1]
+        with open('scratchgems.json', 'w') as file:
+            json.dump(people, indent = 0)
 
 @client.request
 def new(argument1):
@@ -82,7 +85,7 @@ def new(argument1):
         people.append("100")
         return "new"
         with open('scratchgems.json', 'w') as file:
-            json.dump(people, indent = 4)
+            json.dump(people, indent = 0)
     
 @client.event
 def on_ready():
