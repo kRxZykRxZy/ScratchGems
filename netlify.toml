@@ -1,2 +1,1 @@
-[build]
 functions = "requirements.txt"  # Location of your serverless functions directory
