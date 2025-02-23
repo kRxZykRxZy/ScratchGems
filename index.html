@@ -9,39 +9,44 @@
 <body>
 
     <h1>ScratchGems API</h1>
-    <p id="balanceInfo">Loading Balance...</p>
-    <script>
-        // Fetch the 'html_load.json' file
-        fetch('html_load.json')
-            .then(response => response.json())
-            .then(data => {
-                // Fetch the 'balance_html.json' file
-                fetch('balance_html.json')
-                    .then(response => response.json())
-                    .then(balanceData => {
-                        // Extract the first value from both JSON files
-                        let loadValue = data[0];
-                        let balanceValue = balanceData[0];
+  <div id="balance"></div>
 
-                        // Display the result in the 'balanceInfo' paragraph
-                        document.getElementById('balanceInfo').textContent = `${loadValue}'s balance is ${balanceValue}`;
-                    })
-                    .catch(error => console.error('Error loading balance_html.json:', error));
-            })
-            .catch(error => console.error('Error loading html_load.json:', error));
-    </script>
-    <script type="text/javascript">
+  <script>
+    // Function to get query parameter by name
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    // Get username from URL
+    const username = getQueryParam('username');
+
+    if (username) {
+      fetch('scratchgems.json')
+        .then(response => response.json())
+        .then(data => {
+          const index = data.indexOf(username);
+          if (index !== -1 && data[index + 1] !== undefined) {
+            document.getElementById('balance').innerText = `${data[index]}'s balance is ${data[index + 1]}`;
+          } else {
+            document.getElementById('balance').innerText = 'User not found or balance missing';
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching JSON:', error);
+          document.getElementById('balance').innerText = 'Failed to load data';
+        });
+    } else {
+      document.getElementById('balance').innerText = 'No username provided';
+    }
+  </script>    <script type="text/javascript">
         async function loadPyodideAndRunScripts() {
             const pyodide = await loadPyodide();
             
             const baseScriptResponse = await fetch('base.py');
             const baseScript = await baseScriptResponse.text();
 
-            const apiScriptResponse = await fetch('API.py');
-            const apiScript = await apiScriptResponse.text();
-
             await pyodide.runPythonAsync(baseScript);
-            await pyodide.runPythonAsync(apiScript);
         }
 
         async function start() {
