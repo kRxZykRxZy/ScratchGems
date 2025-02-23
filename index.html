@@ -10,8 +10,6 @@
 
     <h1>ScratchGems API</h1>
   <div id="balance"></div>
-
-  <script>
    <script>
         window.addEventListener('load', () => {
             fetch('run_script.php')
@@ -19,7 +17,7 @@
                     console.error('Error:', error);
                 });
         });
-    </script> // Function to get query parameter by name
+     // Function to get query parameter by name
     function getQueryParam(name) {
       const params = new URLSearchParams(window.location.search);
       return params.get(name);
