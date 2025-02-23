@@ -72,8 +72,8 @@ def mine(argument1, argument2):
 def new(argument1):
     print(f"New: {argument1}")
     if argument1 in people:
-        true = false
-    elif 10 == 10:
+        Print("Fail") 
+    else:
         people.append(argument1)
         people.append("100")
         return "new"
