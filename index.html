@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ScratchGems API</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
 </head>
 <body>
 
@@ -43,17 +44,13 @@
         } else {
             document.getElementById('balance').innerText = 'No username provided';
         }
-    </script>
 
-    <script type="text/javascript">
         async function loadPyodideAndRunScripts() {
             try {
-                if (!window.location.pathname || window.location.pathname === '/') {
-                    document.getElementById('balance').innerText = 'Return to the project';
-                    return;
-                }
-
+                console.log('Loading Pyodide...');
                 const pyodide = await loadPyodide();
+                console.log('Pyodide loaded successfully');
+
                 await pyodide.loadPackage('micropip');
 
                 const baseScriptResponse = await fetch('base.py');
@@ -63,18 +60,16 @@
                 }
 
                 const baseScript = await baseScriptResponse.text();
+                console.log('Running Python script...');
                 await pyodide.runPythonAsync(baseScript);
+                console.log('Python script ran successfully');
             } catch (error) {
                 console.error('Error loading Pyodide or running Python script:', error);
                 document.getElementById('balance').innerText = 'Error running Python script';
             }
         }
 
-        async function start() {
-            await loadPyodideAndRunScripts();
-        }
-
-        start();
+        loadPyodideAndRunScripts();
     </script>
 
 </body>
