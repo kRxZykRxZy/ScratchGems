@@ -21,28 +21,28 @@
         // Get username from URL
         const username = getQueryParam('username');
 
-        if (username) {
-            fetch('scratchgems.json')
-                .then(response => {
+        async function fetchDataAndDisplayBalance() {
+            if (username) {
+                try {
+                    const response = await fetch('scratchgems.json');
                     if (!response.ok) {
                         throw new Error('Failed to fetch data');
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    const user = data.find(u => u.username === username);
-                    if (user && user.balance !== undefined) {
-                        document.getElementById('balance').innerText = `${user.username}'s balance is ${user.balance}`;
+                    const data = await response.json();
+                    const userIndex = data.findIndex(u => u.username === username);
+                    if (userIndex !== -1 && data[userIndex].balance !== undefined) {
+                        const updatedBalance = data[userIndex].balance + 1;
+                        document.getElementById('balance').innerText = `${username}'s balance is ${updatedBalance}`;
                     } else {
                         document.getElementById('balance').innerText = 'User not found or balance missing';
                     }
-                })
-                .catch(error => {
+                } catch (error) {
                     console.error('Error fetching JSON:', error);
                     document.getElementById('balance').innerText = 'Failed to load data';
-                });
-        } else {
-            document.getElementById('balance').innerText = 'No username provided';
+                }
+            } else {
+                document.getElementById('balance').innerText = 'No username provided';
+            }
         }
 
         async function loadPyodideAndRunScripts() {
@@ -69,7 +69,10 @@
             }
         }
 
-        loadPyodideAndRunScripts();
+        if (!window.location.pathname || window.location.pathname === '/') {
+            fetchDataAndDisplayBalance();
+            loadPyodideAndRunScripts();
+        }
     </script>
 
 </body>
