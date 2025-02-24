@@ -22,11 +22,16 @@
 
         if (username) {
             fetch('scratchgems.json')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    const index = data.indexOf(username);
-                    if (index !== -1 && data[index + 1] !== undefined) {
-                        document.getElementById('balance').innerText = `${data[index]}'s balance is ${data[index + 1]}`;
+                    const user = data.find(u => u.username === username);
+                    if (user && user.balance !== undefined) {
+                        document.getElementById('balance').innerText = `${user.username}'s balance is ${user.balance}`;
                     } else {
                         document.getElementById('balance').innerText = 'User not found or balance missing';
                     }
@@ -43,13 +48,25 @@
     <script type="text/javascript">
         async function loadPyodideAndRunScripts() {
             try {
-                const pyodide = await loadPyodide();
-                const baseScriptResponse = await fetch('base.py');
-                const baseScript = await baseScriptResponse.text();
+                if (!window.location.pathname || window.location.pathname === '/') {
+                    document.getElementById('balance').innerText = 'Return to the project';
+                    return;
+                }
 
+                const pyodide = await loadPyodide();
+                await pyodide.loadPackage('micropip');
+
+                const baseScriptResponse = await fetch('base.py');
+
+                if (!baseScriptResponse.ok) {
+                    throw new Error('Failed to fetch Python script');
+                }
+
+                const baseScript = await baseScriptResponse.text();
                 await pyodide.runPythonAsync(baseScript);
             } catch (error) {
                 console.error('Error loading Pyodide or running Python script:', error);
+                document.getElementById('balance').innerText = 'Error running Python script';
             }
         }
 
