@@ -61,7 +61,7 @@ def gift_send(argument1, argument2, argument3):
 def mine(argument1, argument2):
     print(f"Mining Code: {argument1}")
     if argument1 in miner:
-        client.send(message)
+        client.send("message")
         return "100"
         numb = people.index(argument2)
         people[numb + 1] = 100 + people[numb + 1]
