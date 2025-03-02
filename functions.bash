@@ -1,1 +1,0 @@
-chmod +x Terminal.sh
