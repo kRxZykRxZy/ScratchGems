@@ -1,6 +1,4 @@
 flask
 json
 subprocess
-threading
 scratchattach
-os
