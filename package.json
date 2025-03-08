@@ -1,0 +1,9 @@
+{
+    "name": "scratch-gems-api",
+    "version": "1.0.0",
+    "scripts": {
+      "start": "pip install -r requirements.txt && wait && python base.py"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+  }
